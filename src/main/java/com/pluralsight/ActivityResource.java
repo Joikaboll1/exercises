@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -69,12 +70,23 @@ public class ActivityResource {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response createActivity(Activity activity) 
 	{
-		System.out.println(activity.getDescription());
-		System.out.println(activity.getDuration());
 		
 		activityRepository.addActivity(activity);
 		
 		return Response.ok(activity).build();
+	}
+	
+	
+	@PUT
+	@Path("{activityId}")
+	@Consumes(MediaType.APPLICATION_JSON) // http://localhost:8080/exercise-services/webapi/activities/{activityId}
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response updateActivity(@PathParam ("activityId") String activityId,Activity activity) {
+		
+		
+		Activity a = activityRepository.updateActivity(activityId,activity);
+		
+		return Response.ok(a).build();
 	}
 	
 	

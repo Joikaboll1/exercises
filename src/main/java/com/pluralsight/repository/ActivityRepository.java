@@ -12,4 +12,6 @@ public interface ActivityRepository {
 	
 	void addActivity(Activity a);
 
+	Activity updateActivity(String id,Activity activity);
+
 }

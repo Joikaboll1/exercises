@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -43,5 +44,30 @@ public class ActivityClient {
 		
 		return response;
 	}
-	
+
+	public Activity create(Activity activity) {
+		
+		WebTarget target = client.target("http://localhost:8080/exercise-services/webapi/");
+		
+		
+		Response response = target.path("activities/activity").request().post(Entity.entity(activity, MediaType.APPLICATION_JSON));
+		
+		if(response.getStatus() != 200) {
+			throw new RuntimeException(response.getStatus() +  ": There was an error on the server");
+		}
+		
+		return response.readEntity(Activity.class);
+	}
+
+	public Activity update(Activity activity) {
+		// TODO Auto-generated method stub
+		WebTarget target = client.target("http://localhost:8080/exercise-services/webapi/");
+		
+		Response response = target.path("activities/"+activity.getId().toString()).request().put(Entity.entity(activity, MediaType.APPLICATION_JSON));
+		if(response.getStatus() != 200) {
+			throw new RuntimeException(response.getStatus() +  ": There was an error on the server");
+		}
+		
+		return response.readEntity(Activity.class);
+	}	
 }

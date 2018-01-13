@@ -1,6 +1,7 @@
 package com.pluralsight.repository;
 
 import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;
 
 import com.pluralsight.model.Activity;
@@ -44,6 +45,9 @@ public class ActivityRepositoryStub implements ActivityRepository {
 
 	public void addActivity(Activity a) 
 	{
+		Random random = new Random();
+		int id = random.nextInt(9000) + 1000;
+		a.setId("" + id);
 		this.activities.add(a);
 	}
 	
@@ -75,6 +79,20 @@ public class ActivityRepositoryStub implements ActivityRepository {
 //		System.out.println(activityId);
 		Activity a = searchForActivity(activityId);		
 		return a;
+	}
+
+	@Override
+	public Activity updateActivity(String id, Activity activity) {
+		// TODO Auto-generated method stub
+		Activity a = searchForActivity(id);
+		if(a != null) {
+			a.setDescription(activity.getDescription());
+			a.setDuration(activity.getDuration());
+			return a;
+		}
+
+		
+		return null;
 	}
 
 }
