@@ -69,5 +69,17 @@ public class ActivityClient {
 		}
 		
 		return response.readEntity(Activity.class);
+	}
+
+	public void delete(String id) {
+		// TODO Auto-generated method stub
+		WebTarget target = client.target("http://localhost:8080/exercise-services/webapi/");
+		
+		Response response = target.path("activities/" + id).request(MediaType.APPLICATION_JSON).delete();
+		
+		if(response.getStatus() != 200) {
+			throw new RuntimeException(response.getStatus() +  ": There was an error on the server");
+		}
+
 	}	
 }

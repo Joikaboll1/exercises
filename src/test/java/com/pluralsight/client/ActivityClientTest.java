@@ -4,15 +4,44 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.junit.Test;
 
 import com.pluralsight.model.Activity;
+import com.pluralsight.model.ExactMatchDto;
 
 public class ActivityClientTest {
 
 	
+	
+	
+	@Test
+	public void testSearch() {
+		ActivitySearchClient client = new ActivitySearchClient();
+		
+		String param="description";
+		String searchValues = "Swimming,Cycling";
+		
+		String param2 = "durationfrom";
+		int durationFrom = 30;
+		String param3 = "durationto";
+		int durationTo = 200;
+			
+		ExactMatchDto exactMatchDto = new ExactMatchDto();
+		exactMatchDto.setExactMatch("false");
+		
+		List<Activity> activities = client.search(param, searchValues,exactMatchDto,param2,durationFrom,param3,durationTo);
+				
+		for (Activity a : activities) {
+			System.out.println(a.getDescription());
+		}
+		
+		assertNotNull(activities);
+				
+	}
 	
 	
 	@Test
@@ -35,6 +64,12 @@ public class ActivityClientTest {
 		assertNotNull(activity);
 
 		
+	}
+	
+	@Test
+	public void delete() {				
+		ActivityClient client = new ActivityClient();
+		client.delete("1234");
 	}
 	
 	@Test 

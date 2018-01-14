@@ -1,8 +1,11 @@
 package com.pluralsight.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.pluralsight.model.Activity;
 import com.pluralsight.model.User;
@@ -13,6 +16,44 @@ public class ActivityRepositoryStub implements ActivityRepository {
 	
 	
 	
+	@Override
+	public List<Activity> findByDescription(String descriptions, String exactMatch,int from, int to) {	
+		
+		
+		
+		List<Activity> results = new ArrayList<Activity>();
+		String [] descriptionsArray;
+		
+		System.out.println("from->" +from);
+		System.out.println("to->" +to);
+		System.out.println("sss->" +descriptions);
+		
+		descriptions.replaceAll("\\s+", "");
+		descriptionsArray = descriptions.split(",");
+		
+		for (String s:descriptionsArray) {
+			System.out.println("-->" + s);
+			for(Activity a: activities) {
+				if(exactMatch.equalsIgnoreCase("true")) {
+					if(a.getDescription().toLowerCase().equals(s.toLowerCase()) && (a.getDuration() > from && a.getDuration() < to))
+						results.add(a);	
+				}else {
+					if(a.getDescription().toLowerCase().contains(s.toLowerCase()) && (a.getDuration() > from && a.getDuration() < to))
+						results.add(a);		
+				}
+				
+			}
+			
+			
+			
+		}
+		return results;
+		
+	}
+	
+
+
+
 	public ActivityRepositoryStub() {
 		this.activities = new ArrayList<Activity>();
 		
@@ -93,6 +134,18 @@ public class ActivityRepositoryStub implements ActivityRepository {
 
 		
 		return null;
+	}
+
+	@Override
+	public boolean deleteActivity(String activityId) {
+		// TODO Auto-generated method stub
+		Activity a = findActivity(activityId);
+		if(a != null) {
+			activities.remove(a);
+			return true;
+		}
+		return false;
+		
 	}
 
 }

@@ -4,6 +4,7 @@ package com.pluralsight;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -23,7 +24,26 @@ import com.pluralsight.repository.ActivityRepositoryStub;
 public class ActivityResource {
 
 	private ActivityRepository activityRepository = new ActivityRepositoryStub();
-		
+	
+	
+	
+	
+	@DELETE
+	@Path("{activityId}")
+	@Consumes(MediaType.APPLICATION_JSON) // http://localhost:8080/exercise-services/webapi/activities/{activityId}
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response deleteActivity(@PathParam("activityId") String activityId) {
+		System.out.println(activityId);
+		if(activityId == null || activityId.length() != 4 ) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+		if(!activityRepository.deleteActivity(activityId)) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		return Response.ok("Deleted").build();
+	}
+	
+	
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public List<Activity> getAllActivities() // http://localhost:8080/exercise-services/webapi/activities
@@ -89,7 +109,7 @@ public class ActivityResource {
 		return Response.ok(a).build();
 	}
 	
-	
+
 	
 //	@POST
 //	@Path("activity")
